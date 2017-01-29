@@ -3,6 +3,8 @@ package com.nebby.server;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -10,8 +12,11 @@ import com.sun.net.httpserver.HttpServer;
 
 public class Server 
 {
+	
+	public static List<Medication> medsList = new ArrayList<Medication>();
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception 
+	{
 		HttpServer server = HttpServer.create(new InetSocketAddress(8888), 0);
 		server.createContext("/addPill", new AddPill());
 		server.setExecutor(null); // creates a default executor
@@ -29,19 +34,12 @@ public class Server
 		server.setExecutor(null); // creates a default executor
 		server.start();
 		
-		server.createContext("/AddPill", new AddPill());
-		server.setExecutor(null); // creates a default executor
-		server.start();
-		server.createContext("/TakePill", new TakePill());
-		server.setExecutor(null); // creates a default executor
+		server.createContext("/checkup", new Checkup());
+		server.setExecutor(null);
 		server.start();
 		
-		server.createContext("/PillsTaken", new PillsTaken());
-		server.setExecutor(null); // creates a default executor
-		server.start();
-		
-		server.createContext("/Clear", new Clear());
-		server.setExecutor(null); // creates a default executor
+		server.createContext("/bluetooth", new Bluetooth());
+		server.setExecutor(null);
 		server.start();
 	}
 
@@ -49,10 +47,12 @@ public class Server
 	{
 		public void handle(HttpExchange t) throws IOException 
 		{
-			String response = "Welcome Real's HowTo test page";
-			t.sendResponseHeaders(200, response.length());
+			System.out.println("ADDING A NEW PILL");
+			Medication med = new Medication((String) t.getAttribute("name"), (String) t.getAttribute("time"));
+			med.timer = System.currentTimeMillis() + 60000;
+			medsList.add(med);
+			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
-			os.write(response.getBytes());
 			os.close();
 		}
 	}
@@ -82,12 +82,45 @@ public class Server
 	static class Clear implements HttpHandler 
 	{
 		public void handle(HttpExchange t) throws IOException {
-			String response = "Welcome Real's HowTo test page";
+			medsList.clear();
+			t.sendResponseHeaders(200, 0);
+			OutputStream os = t.getResponseBody();
+			os.close();
+		}
+	}
+	
+	static class Checkup implements HttpHandler 
+	{
+		public void handle(HttpExchange t) throws IOException {
+			System.out.println("Grandma is doing alright!");
+			t.sendResponseHeaders(200, 0);
+			OutputStream os = t.getResponseBody();
+			os.close();
+		}
+	}
+	
+	static class Bluetooth implements HttpHandler
+	{
+
+		@Override
+		public void handle(HttpExchange t) throws IOException
+		{
+			boolean found = false;
+			for(Medication med : medsList)
+			{
+				if(med.timer < System.currentTimeMillis())
+				{
+					found = true;
+					med.timer = System.currentTimeMillis() + 60000;
+				}
+			}
+			String response = "" + found;
 			t.sendResponseHeaders(200, response.length());
 			OutputStream os = t.getResponseBody();
 			os.write(response.getBytes());
 			os.close();
 		}
+		
 	}
 
 	
