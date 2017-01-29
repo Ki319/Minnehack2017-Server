@@ -16,6 +16,7 @@ public class Medication {
 		
 		public Medication(String n)
 		{
+			System.out.println(n);
 			name = n.split(":")[0];
 			time = n.split(":")[1];
 		}
