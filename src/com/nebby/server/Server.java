@@ -8,7 +8,9 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,7 +19,13 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.bson.Document;
+
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
+import com.nebby.server.network.Network;
 import com.nebby.server.network.ServerNetwork;
 
 public class Server 
@@ -32,6 +40,7 @@ public class Server
 	private Cipher cipher;
 	private RSAPublicKey publicKey;
 	private MongoClient client;
+	private MongoCollection<Document> users;
 	
 	private int port;
 	
@@ -40,8 +49,7 @@ public class Server
 		int port = args.length > 0 ? Integer.parseInt(args[0]) : 8080;
 		int size = args.length > 1 ? Integer.parseInt(args[1]) : 1024;
 		
-		server = new Server(port, size);
-		server.run();
+		//server = new Server(port, size);
 	}
 	
 	public Server(int port, int encryption) throws IOException
@@ -86,6 +94,7 @@ public class Server
 					}
 					try 
 					{
+						System.out.println("CONNECTING ...");
 						newClient = new ServerNetwork(server, clientSocket);
 						if(playerNetworks.containsKey(newClient.getUUID()))
 						{
@@ -94,6 +103,7 @@ public class Server
 						}
 						newClient.validate();
 						playerNetworks.put(newClient.getUUID(), newClient);
+						System.out.println("VALIDATED!");
 					} 
 					catch (IOException e)
 					{
@@ -116,28 +126,31 @@ public class Server
 			}
 		}.start();
 		client = new MongoClient();
-	}
-	
-	public void run()
-	{
-		update(0);
-		try 
-		{
-			Thread.sleep(20);
-			run();
-		}
-		catch (InterruptedException e) 
-		{
-			e.printStackTrace();
-		}
+		users = client.getDatabase("alexa").getCollection("users");
+		update();
 	}
 
-	public void update(double delta)
+	public void update()
 	{
-		for(String uuid : playerNetworks.keySet())
+		new Thread()
 		{
-			playerNetworks.get(uuid).update(delta);
-		}
+			public void run()
+			{
+				for(String uuid : playerNetworks.keySet())
+				{
+					playerNetworks.get(uuid).update();
+				}
+				try
+				{
+					Thread.sleep(20);
+					run();
+				}
+				catch (InterruptedException e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		}.start();
 	}
 	
 	public ServerNetwork getNetwork(UUID uuid)
@@ -171,6 +184,48 @@ public class Server
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void addPillToUser(Network network, String pillName, String pillDosage, String pillInterval) 
+	{
+		ServerNetwork serverNetwork = ((ServerNetwork) network);
+		FindIterable<Document> iter = users.find(Filters.eq("id", serverNetwork.getUUID()));
+		Document document;
+		if(!iter.iterator().hasNext())
+		{
+			document = new Document();
+			document.append("id", serverNetwork.getUUID());
+			Document pillDoc = new Document();
+			pillDoc.append("name", pillName);
+			pillDoc.append("dosage", pillDosage);
+			pillDoc.append("interval", pillInterval);
+			document.append("pills", Arrays.asList(pillDoc));
+			users.insertOne(document);
+		}
+		else
+		{
+			document = iter.first();
+			Document newPill = new Document();
+			newPill.append("name", pillName);
+			newPill.append("dosage", pillDosage);
+			newPill.append("interval", pillInterval);
+			users.updateOne(Filters.eq("id", serverNetwork.getUUID()), new Document("$push", new Document("pills", newPill)));
+		}
+	}
+	
+	public void takePill(Network network, String name)
+	{
+		
+	}
+	
+	public void takeAllPills(Network network)
+	{
+		
+	}
+	
+	public void pillsQuery(Network network)
+	{
+		
 	}
 	
 }
