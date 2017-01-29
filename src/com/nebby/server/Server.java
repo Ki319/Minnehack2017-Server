@@ -10,7 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,6 +19,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
@@ -30,6 +31,7 @@ import com.nebby.server.network.ServerNetwork;
 
 public class Server 
 {
+	private static final Logger log = LoggerFactory.getLogger(Server.class);
 	
 	private static Server server;
 	private static boolean stopServerThread = false;
@@ -46,8 +48,10 @@ public class Server
 	
 	public static void main(String[] args) throws Exception
 	{
+		log.info("test");
 		System.err.println("STARTING E!");
 		System.out.println("STARTING!");
+		
 		int port = args.length > 0 ? Integer.parseInt(args[0]) : 8888;
 		int size = args.length > 1 ? Integer.parseInt(args[1]) : 1024;
 		
