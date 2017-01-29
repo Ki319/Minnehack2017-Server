@@ -73,7 +73,8 @@ public abstract class Network
 						int packet = inputStream.readShort();
 						byte[] data = new byte[inputStream.readInt()];
 						inputStream.readFully(data);
-						packets.offer(Packet.wrap(packet, data));
+						Packet packetWrapped = Packet.wrap(packet, data);
+						packets.offer(packetWrapped);
 					}
 				}
 				catch (IOException | ReflectiveOperationException e) 
@@ -121,7 +122,7 @@ public abstract class Network
 		}.start();
 	}
 
-	public void update(double delta)
+	public void update()
 	{
 		Packet nextPacket = null;
 		while((nextPacket = packets.poll()) != null)
@@ -182,7 +183,7 @@ public abstract class Network
 			DataInputStream inputStream = new DataInputStream(new ByteArrayInputStream(packetSecure.getEncoded()));
 			byte[] data = Base64.decodeBase64(inputStream.readUTF());
 			inputStream = new DataInputStream(new ByteArrayInputStream(decrypt.doFinal(data)));
-			
+
 			int packet = inputStream.readShort();
 			data = new byte[inputStream.readInt()];
 			inputStream.readFully(data);
@@ -197,6 +198,7 @@ public abstract class Network
 
 	public void invalidate() throws IOException 
 	{
+		isConnected = false;
 		socket.close();
 	}
 

@@ -20,7 +20,7 @@ public abstract class Packet
 		addPacket(PacketAES.class);
 		addPacket(PacketSecure.class);
 		addPacket(PacketTakePill.class);
-		addPacket(PacketTakenPill.class);
+		addPacket(PacketQueryPills.class);
 		addPacket(PacketAddPill.class);
 	}
 	
