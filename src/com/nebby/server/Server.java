@@ -28,6 +28,21 @@ public class Server
 		server.createContext("/clear", new Clear());
 		server.setExecutor(null); // creates a default executor
 		server.start();
+		
+		server.createContext("/AddPill", new AddPill());
+		server.setExecutor(null); // creates a default executor
+		server.start();
+		server.createContext("/TakePill", new TakePill());
+		server.setExecutor(null); // creates a default executor
+		server.start();
+		
+		server.createContext("/PillsTaken", new PillsTaken());
+		server.setExecutor(null); // creates a default executor
+		server.start();
+		
+		server.createContext("/Clear", new Clear());
+		server.setExecutor(null); // creates a default executor
+		server.start();
 	}
 
 	static class AddPill implements HttpHandler 
@@ -75,4 +90,47 @@ public class Server
 		}
 	}
 
+	static class AddPill implements HttpHandler 
+	{
+		public void handle(HttpExchange t) throws IOException {
+			String response = "Welcome Real's HowTo test page";
+			t.sendResponseHeaders(200, response.length());
+			OutputStream os = t.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
+		}
+	}
+	
+	static class TakePill implements HttpHandler 
+	{
+		public void handle(HttpExchange t) throws IOException {
+			String response = "Welcome Real's HowTo test page";
+			t.sendResponseHeaders(200, response.length());
+			OutputStream os = t.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
+		}
+	}
+	
+	static class PillsTaken implements HttpHandler 
+	{
+		public void handle(HttpExchange t) throws IOException {
+			String response = "Welcome Real's HowTo test page";
+			t.sendResponseHeaders(200, response.length());
+			OutputStream os = t.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
+		}
+	}
+	
+	static class Clear implements HttpHandler 
+	{
+		public void handle(HttpExchange t) throws IOException {
+			String response = "Welcome Real's HowTo test page";
+			t.sendResponseHeaders(200, response.length());
+			OutputStream os = t.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
+		}
+	}
 }
