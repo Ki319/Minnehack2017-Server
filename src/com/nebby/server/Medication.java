@@ -14,10 +14,10 @@ public class Medication {
 			time= null;
 		}
 		
-		public Medication(String n, String t)
+		public Medication(String n)
 		{
-			name = n;
-			time = t;
+			name = n.split(":")[0];
+			time = n.split(":")[1];
 		}
 
 		public String getName() {
