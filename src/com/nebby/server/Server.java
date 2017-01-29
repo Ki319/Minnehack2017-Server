@@ -141,7 +141,9 @@ public class Server
 					med.timer = System.currentTimeMillis() + 60000;
 				}
 			}
+			if(found){
 			System.out.println("Notifying the user that they need to take their medicine\n");
+			}
 			String response = "" + found;
 			t.sendResponseHeaders(200, response.length());
 			OutputStream os = t.getResponseBody();
