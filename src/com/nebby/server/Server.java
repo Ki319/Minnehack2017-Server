@@ -17,6 +17,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import com.mongodb.MongoClient;
 import com.nebby.server.network.ServerNetwork;
 
 public class Server 
@@ -30,15 +31,22 @@ public class Server
 
 	private Cipher cipher;
 	private RSAPublicKey publicKey;
+	private MongoClient client;
+	
+	private int port;
 	
 	public static void main(String[] args) throws Exception
 	{
-		server = new Server(8888, 1024);
+		int port = args.length > 0 ? Integer.parseInt(args[0]) : 8080;
+		int size = args.length > 1 ? Integer.parseInt(args[1]) : 1024;
+		
+		server = new Server(port, size);
 		server.run();
 	}
 	
 	public Server(int port, int encryption) throws IOException
 	{
+		this.port = port;
 		listener = new ServerSocket(port);
 		playerNetworks = new HashMap<String, ServerNetwork>();
 		if(encryption > 0)
@@ -107,6 +115,7 @@ public class Server
 				}
 			}
 		}.start();
+		client = new MongoClient();
 	}
 	
 	public void run()
@@ -115,6 +124,7 @@ public class Server
 		try 
 		{
 			Thread.sleep(20);
+			run();
 		}
 		catch (InterruptedException e) 
 		{
@@ -137,7 +147,7 @@ public class Server
 
 	public int getServerPort()
 	{
-		return 8888;
+		return port;
 	}
 
 	public RSAPublicKey getPublicKey()
