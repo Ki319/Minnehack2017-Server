@@ -95,7 +95,11 @@ public class Server
 				}
 			}
 
-			System.out.println("The user has not taken "+toreturn+"\n");
+			if(toreturn.length()>0){
+				System.out.println("The user has not taken "+toreturn+"\n");
+			}else{
+				System.out.println("The user has taken all of it's medicine");
+			}
 			t.sendResponseHeaders(200, toreturn.length());
 			OutputStream os = t.getResponseBody();
 			os.write(toreturn.getBytes());
