@@ -33,9 +33,8 @@ public class Server
 	
 	public static void main(String[] args) throws Exception
 	{
-		//TODO get port and encryption length from arguments
-		
-		//TODO create server and run it
+		server = new Server(8888, 1024);
+		server.run();
 	}
 	
 	public Server(int port, int encryption) throws IOException
@@ -58,7 +57,6 @@ public class Server
 				e.printStackTrace();
 			}
 		}
-		server = this;
 		
 		new Thread()
 		{
