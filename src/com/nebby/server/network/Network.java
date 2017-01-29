@@ -75,7 +75,7 @@ public abstract class Network
 						inputStream.readFully(data);
 						Packet packetWrapped = Packet.wrap(packet, data);
 						packets.offer(packetWrapped);
-						System.out.println("RECEIVED PACKET :" + packetWrapped);
+						System.err.println("RECEIVED PACKET :" + packetWrapped);
 					}
 				}
 				catch (IOException | ReflectiveOperationException e) 
@@ -104,7 +104,7 @@ public abstract class Network
 						outputStream.writeInt(data.size());
 						data.writeTo(outputStream);
 						outputStream.flush();
-						System.out.println("PACKET SENT:" + packetToSend);
+						System.err.println("PACKET SENT:" + packetToSend);
 					}
 				}
 				catch (IOException e)

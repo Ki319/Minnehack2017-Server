@@ -94,7 +94,7 @@ public class Server
 					}
 					try 
 					{
-						System.out.println("CONNECTING ...");
+						System.err.println("CONNECTING ...");
 						newClient = new ServerNetwork(server, clientSocket);
 						if(playerNetworks.containsKey(newClient.getUUID()))
 						{
@@ -103,7 +103,7 @@ public class Server
 						}
 						newClient.validate();
 						playerNetworks.put(newClient.getUUID(), newClient);
-						System.out.println("VALIDATED!");
+						System.err.println("VALIDATED!");
 					} 
 					catch (IOException e)
 					{
