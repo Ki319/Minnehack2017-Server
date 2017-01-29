@@ -7,7 +7,6 @@ import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +30,6 @@ public class Server
 
 	private Cipher cipher;
 	private RSAPublicKey publicKey;
-	
-	private MongoDB mongoDB;
 	
 	public static void main(String[] args) throws Exception
 	{
@@ -62,9 +59,6 @@ public class Server
 			}
 		}
 		server = this;
-		
-		mongoDB = new MongoDB();
-		mongoDB.start();
 		
 		new Thread()
 		{
