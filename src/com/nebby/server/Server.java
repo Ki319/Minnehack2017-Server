@@ -51,6 +51,8 @@ public class Server
 			Medication med = new Medication((String) t.getAttribute("name"), (String) t.getAttribute("time"));
 			med.timer = System.currentTimeMillis() + 60000;
 			medsList.add(med);
+			
+			System.out.println(med.toString()+" added\n");
 			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
 			os.close();
@@ -68,6 +70,7 @@ public class Server
 			}
 			
 			
+			System.out.println("All pills marked as taken\n");
 			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
 			os.close();
@@ -85,7 +88,7 @@ public class Server
 				}
 			}
 
-			
+			System.out.println("The user has not taken "+toreturn+"\n");
 			t.sendResponseHeaders(200, toreturn.length());
 			OutputStream os = t.getResponseBody();
 			os.write(toreturn.getBytes());
@@ -96,7 +99,7 @@ public class Server
 	static class Clear implements HttpHandler 
 	{
 		public void handle(HttpExchange t) throws IOException {
-			System.out.println("The user has cleared the list of medication");
+			System.out.println("The user has cleared the list of medication\n");
 			
 			medsList.clear();
 			t.sendResponseHeaders(200, 0);
@@ -108,7 +111,7 @@ public class Server
 	static class Checkup implements HttpHandler 
 	{
 		public void handle(HttpExchange t) throws IOException {
-			System.out.println("Grandma is has taken today's medicine!");
+			System.out.println("Grandma has taken today's medicine!\n");
 			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
 			os.close();
@@ -131,6 +134,7 @@ public class Server
 					med.timer = System.currentTimeMillis() + 60000;
 				}
 			}
+			System.out.println("Notifying the user that they need to take their medicine\n");
 			String response = "" + found;
 			t.sendResponseHeaders(200, response.length());
 			OutputStream os = t.getResponseBody();

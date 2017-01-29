@@ -35,5 +35,10 @@ public class Medication {
 		public void setTime(String date) {
 			this.time = date;
 		}
+
+		@Override
+		public String toString() {
+			return "Medication [name=" + name + ", time=" + time + ", timer=" + timer + ", checked=" + checked + "]";
+		}
 		
 }
