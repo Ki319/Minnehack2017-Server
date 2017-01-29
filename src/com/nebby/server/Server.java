@@ -47,7 +47,7 @@ public class Server
 	{
 		public void handle(HttpExchange t) throws IOException 
 		{
-			System.out.println("ADDING A NEW PILL");
+			System.out.println("Adding a new pill to the list");
 			Medication med = new Medication((String) t.getAttribute("name"), (String) t.getAttribute("time"));
 			med.timer = System.currentTimeMillis() + 60000;
 			medsList.add(med);
@@ -80,7 +80,7 @@ public class Server
 			System.out.println("The user is asking if it has taken today's pills");
 			
 			for(Medication med: medsList){
-			
+				
 			}
 
 
