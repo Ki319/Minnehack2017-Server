@@ -32,10 +32,10 @@ import com.nebby.server.network.ServerNetwork;
 public class Server 
 {
 	private static final Logger log = LoggerFactory.getLogger(Server.class);
-	
+
 	private static Server server;
 	private static boolean stopServerThread = false;
-	
+
 	private Map<String, ServerNetwork> playerNetworks;
 	private final ServerSocket listener;
 
@@ -43,21 +43,21 @@ public class Server
 	private RSAPublicKey publicKey;
 	private MongoClient client;
 	private MongoCollection<Document> users;
-	
+
 	private int port;
-	
+
 	public static void main(String[] args) throws Exception
 	{
 		log.error("test");
 		System.err.println("STARTING E!");
 		System.out.println("STARTING!");
-		
+
 		int port = args.length > 0 ? Integer.parseInt(args[0]) : 8888;
 		int size = args.length > 1 ? Integer.parseInt(args[1]) : 1024;
-		
+
 		server = new Server(port, size);
 	}
-	
+
 	public Server(int port, int encryption) throws IOException
 	{
 		this.port = port;
@@ -79,7 +79,7 @@ public class Server
 				e.printStackTrace();
 			}
 		}
-		
+
 		new Thread()
 		{
 			@Override
@@ -140,23 +140,31 @@ public class Server
 		{
 			public void run()
 			{
-				for(String uuid : playerNetworks.keySet())
+				update();
+			}
+
+			public void update()
+			{
+				while(true)
 				{
-					playerNetworks.get(uuid).update();
-				}
-				try
-				{
-					Thread.sleep(20);
-					run();
-				}
-				catch (InterruptedException e) 
-				{
-					e.printStackTrace();
+					for(String uuid : playerNetworks.keySet())
+					{
+						playerNetworks.get(uuid).update();
+					}
+					try
+					{
+						Thread.sleep(20);
+					}
+					catch (InterruptedException e) 
+					{
+						e.printStackTrace();
+						return;
+					}
 				}
 			}
 		}.start();
 	}
-	
+
 	public ServerNetwork getNetwork(UUID uuid)
 	{
 		return playerNetworks.get(uuid);
@@ -216,20 +224,20 @@ public class Server
 			users.updateOne(Filters.eq("id", serverNetwork.getUUID()), new Document("$push", new Document("pills", newPill)));
 		}
 	}
-	
+
 	public void takePill(Network network, String name)
 	{
-		
+
 	}
-	
+
 	public void takeAllPills(Network network)
 	{
-		
+
 	}
-	
+
 	public void pillsQuery(Network network)
 	{
-		
+
 	}
-	
+
 }
