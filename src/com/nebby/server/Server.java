@@ -46,7 +46,7 @@ public class Server
 	
 	public static void main(String[] args) throws Exception
 	{
-		int port = args.length > 0 ? Integer.parseInt(args[0]) : 8080;
+		int port = args.length > 0 ? Integer.parseInt(args[0]) : 8888;
 		int size = args.length > 1 ? Integer.parseInt(args[1]) : 1024;
 		
 		//server = new Server(port, size);
