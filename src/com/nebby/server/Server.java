@@ -48,7 +48,7 @@ public class Server
 	
 	public static void main(String[] args) throws Exception
 	{
-		log.info("test");
+		log.error("test");
 		System.err.println("STARTING E!");
 		System.out.println("STARTING!");
 		
@@ -99,6 +99,7 @@ public class Server
 					}
 					try 
 					{
+						log.error("TESTING!!!");
 						System.err.println("CONNECTING ...");
 						newClient = new ServerNetwork(server, clientSocket);
 						if(playerNetworks.containsKey(newClient.getUUID()))
