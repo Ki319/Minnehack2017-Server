@@ -7,13 +7,17 @@ import java.security.GeneralSecurityException;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.nebby.server.Server;
+
 public class ServerNetwork extends Network
 {
 
+	private Server server;
 	private String uuid;
 
-	public ServerNetwork(Socket clientSocket) throws IOException
+	public ServerNetwork(Server serverApplication, Socket clientSocket) throws IOException
 	{
+		server = serverApplication;
 		connect(clientSocket);
 		uuid = clientSocket.getRemoteSocketAddress().toString();
 	}
@@ -21,6 +25,11 @@ public class ServerNetwork extends Network
 	public String getUUID()
 	{
 		return uuid;
+	}
+
+	public Server getServer()
+	{
+		return server;
 	}
 
 	public void setAESKey(byte[] encoded)

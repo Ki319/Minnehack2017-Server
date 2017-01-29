@@ -36,7 +36,7 @@ public class Server
 		
 	}
 	
-	public Server(int port, int encryption)
+	public Server(int port, int encryption) throws IOException
 	{
 		listener = new ServerSocket(port);
 		playerNetworks = new HashMap<String, ServerNetwork>();
@@ -107,6 +107,11 @@ public class Server
 			}
 		}.start();
 	}
+	
+	public void run()
+	{
+		
+	}
 
 	public void update(double delta)
 	{
@@ -114,7 +119,6 @@ public class Server
 		{
 			playerNetworks.get(uuid).update(delta);
 		}
-		super.update(delta);
 	}
 	
 	public ServerNetwork getNetwork(UUID uuid)
