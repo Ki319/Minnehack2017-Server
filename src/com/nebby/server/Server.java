@@ -49,7 +49,7 @@ public class Server
 		int port = args.length > 0 ? Integer.parseInt(args[0]) : 8888;
 		int size = args.length > 1 ? Integer.parseInt(args[1]) : 1024;
 		
-		//server = new Server(port, size);
+		server = new Server(port, size);
 	}
 	
 	public Server(int port, int encryption) throws IOException
@@ -125,8 +125,8 @@ public class Server
 				}
 			}
 		}.start();
-		client = new MongoClient();
-		users = client.getDatabase("alexa").getCollection("users");
+		//client = new MongoClient();
+		//users = client.getDatabase("alexa").getCollection("users");
 		update();
 	}
 

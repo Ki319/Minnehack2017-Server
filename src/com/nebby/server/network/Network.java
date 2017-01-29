@@ -80,7 +80,6 @@ public abstract class Network
 				}
 				catch (IOException | ReflectiveOperationException e) 
 				{
-					e.printStackTrace();
 					if(e instanceof SocketException)
 					{
 						isConnected = false;
@@ -110,7 +109,6 @@ public abstract class Network
 				}
 				catch (IOException e)
 				{
-					e.printStackTrace();
 					if(e instanceof SocketException)
 					{
 						isConnected = false;
@@ -118,7 +116,6 @@ public abstract class Network
 				} 
 				catch (InterruptedException e) 
 				{
-					e.printStackTrace();
 				}
 			}
 		}.start();
