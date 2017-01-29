@@ -7,6 +7,7 @@ import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,9 +32,13 @@ public class Server
 	private Cipher cipher;
 	private RSAPublicKey publicKey;
 	
-	public static void main(String[] args)
+	private MongoDB mongoDB;
+	
+	public static void main(String[] args) throws Exception
 	{
+		//TODO get port and encryption length from arguments
 		
+		//TODO create server and run it
 	}
 	
 	public Server(int port, int encryption) throws IOException
@@ -57,6 +62,10 @@ public class Server
 			}
 		}
 		server = this;
+		
+		mongoDB = new MongoDB();
+		mongoDB.start();
+		
 		new Thread()
 		{
 			@Override
@@ -110,7 +119,15 @@ public class Server
 	
 	public void run()
 	{
-		
+		update(0);
+		try 
+		{
+			Thread.sleep(20);
+		}
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 
 	public void update(double delta)
