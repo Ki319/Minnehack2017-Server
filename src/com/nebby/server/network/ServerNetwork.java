@@ -7,15 +7,15 @@ import java.security.GeneralSecurityException;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.nebby.server.Server;
+import com.nebby.server.Server1;
 
 public class ServerNetwork extends Network
 {
 
-	private Server server;
+	private Server1 server;
 	private String uuid;
 
-	public ServerNetwork(Server serverApplication, Socket clientSocket) throws IOException
+	public ServerNetwork(Server1 serverApplication, Socket clientSocket) throws IOException
 	{
 		server = serverApplication;
 		connect(clientSocket);
@@ -27,7 +27,7 @@ public class ServerNetwork extends Network
 		return uuid;
 	}
 
-	public Server getServer()
+	public Server1 getServer()
 	{
 		return server;
 	}

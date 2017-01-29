@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import com.nebby.server.Server;
+import com.nebby.server.Server1;
 
 public class PacketAddPill extends Packet
 {
@@ -41,7 +41,7 @@ public class PacketAddPill extends Packet
 	@Override
 	public void handle(Network network)
 	{
-		Server server = ((ServerNetwork)network).getServer();
+		Server1 server = ((ServerNetwork)network).getServer();
 		server.addPillToUser(network, pillName, pillDosage, pillInterval);
 	}
 

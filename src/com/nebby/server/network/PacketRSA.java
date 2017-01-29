@@ -5,7 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.security.interfaces.RSAPublicKey;
 
-import com.nebby.server.Server;
+import com.nebby.server.Server1;
 
 public class PacketRSA extends Packet
 {
@@ -48,7 +48,7 @@ public class PacketRSA extends Packet
 	@Override
 	public void handle(Network network) 
 	{
-		Server server = ((ServerNetwork)network).getServer();
+		Server1 server = ((ServerNetwork)network).getServer();
 		network.sendPacket(new PacketRSA(server.getPublicKey(), server.getAESLength()));
 	}
 
