@@ -6,6 +6,9 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.util.EntityUtils;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -48,7 +51,8 @@ public class Server
 		public void handle(HttpExchange t) throws IOException 
 		{
 			System.out.println("Adding a new pill to the list");
-			Medication med = new Medication((String) t.getAttribute("name"), (String) t.getAttribute("time"));
+			System.out.println(IOUtils.toString(t.getRequestBody()));
+			Medication med = new Medication();
 			med.timer = System.currentTimeMillis() + 60000;
 			medsList.add(med);
 			t.sendResponseHeaders(200, 0);
@@ -61,15 +65,18 @@ public class Server
 	{
 		public void handle(HttpExchange t) throws IOException {
 			System.out.println("The user reports today's pills were taken");
+			String earliest = "";
 			for(Medication med: medsList){
 				if(med.checked || med.timer < System.currentTimeMillis()){
 					med.checked = false;
+					earliest = med.getTime();
 				}
 			}
 			
 			
-			t.sendResponseHeaders(200, 0);
+			t.sendResponseHeaders(200, earliest.length());
 			OutputStream os = t.getResponseBody();
+			os.write(earliest.getBytes());
 			os.close();
 		}
 	}
