@@ -1,6 +1,6 @@
 CLIENT_ID="amzn1.application-oa2-client.6174d75e2c0144a1bd0f1964fe712bb1"
 CLIENT_SECRET="dae7ff77c1777b638fd53ab1960376fb89f8652c8bafc2099b251fe15f08d25c"
-CODE="ANkRFMOWsNYKWnLZCQaa"
+CODE="ANROiiRMZEGXUOeKJVjX"
 GRANT_TYPE="authorization_code"
 REDIRECT_URI="https://localhost:9745/authresponse"
 
