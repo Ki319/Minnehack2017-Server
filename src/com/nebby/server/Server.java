@@ -54,8 +54,6 @@ public class Server
 			Medication med = new Medication(IOUtils.toString(t.getRequestBody()));
 			med.timer = System.currentTimeMillis() + 60000;
 			medsList.add(med);
-			
-			System.out.println(med.toString()+" added\n");
 			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
 			os.close();
