@@ -19,24 +19,24 @@ public class Server
 	{
 		HttpServer server = HttpServer.create(new InetSocketAddress(8888), 0);
 		server.createContext("/addPill", new AddPill());
-		server.setExecutor(null); // creates a default executor
-		server.start();
+		//server.setExecutor(null); // creates a default executor
+		//server.start();
 		
 		server.createContext("/takePill", new TakePill());
-		server.setExecutor(null); // creates a default executor
-		server.start();
+		//server.setExecutor(null); // creates a default executor
+		//server.start();
 		
 		server.createContext("/pillsTaken", new PillsTaken());
-		server.setExecutor(null); // creates a default executor
-		server.start();
+		//server.setExecutor(null); // creates a default executor
+		//server.start();
 		
 		server.createContext("/clear", new Clear());
-		server.setExecutor(null); // creates a default executor
-		server.start();
+		//server.setExecutor(null); // creates a default executor
+		//server.start();
 		
 		server.createContext("/checkup", new Checkup());
-		server.setExecutor(null);
-		server.start();
+		//server.setExecutor(null);
+		//server.start();
 		
 		server.createContext("/bluetooth", new Bluetooth());
 		server.setExecutor(null);
@@ -60,10 +60,16 @@ public class Server
 	static class TakePill implements HttpHandler 
 	{
 		public void handle(HttpExchange t) throws IOException {
-			String response = "Welcome Real's HowTo test page";
-			t.sendResponseHeaders(200, response.length());
+			System.out.println("The user reports a pill was taken");
+			for(Medication med: medsList){
+				if(med.checked || med.timer < System.currentTimeMillis()){
+					med.checked = false;
+				}
+			}
+			
+			
+			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
-			os.write(response.getBytes());
 			os.close();
 		}
 	}
@@ -71,10 +77,15 @@ public class Server
 	static class PillsTaken implements HttpHandler 
 	{
 		public void handle(HttpExchange t) throws IOException {
-			String response = "Welcome Real's HowTo test page";
-			t.sendResponseHeaders(200, response.length());
+			System.out.println("The user is asking if it has taken today's pills");
+			
+			for(Medication med: medsList){
+			
+			}
+
+
+			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
-			os.write(response.getBytes());
 			os.close();
 		}
 	}
@@ -111,6 +122,7 @@ public class Server
 				if(med.timer < System.currentTimeMillis())
 				{
 					found = true;
+					med.checked = true;
 					med.timer = System.currentTimeMillis() + 60000;
 				}
 			}

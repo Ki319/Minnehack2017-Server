@@ -7,6 +7,7 @@ public class Medication {
 		private String name;
 		private String time;
 		public long timer = 0;
+		public boolean checked = false;
 		
 		public Medication() {
 			name = null;
