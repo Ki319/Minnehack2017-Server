@@ -60,7 +60,7 @@ public class Server
 	static class TakePill implements HttpHandler 
 	{
 		public void handle(HttpExchange t) throws IOException {
-			System.out.println("The user reports a pill was taken");
+			System.out.println("The user reports today's pills were taken");
 			for(Medication med: medsList){
 				if(med.checked || med.timer < System.currentTimeMillis()){
 					med.checked = false;
@@ -78,14 +78,17 @@ public class Server
 	{
 		public void handle(HttpExchange t) throws IOException {
 			System.out.println("The user is asking if it has taken today's pills");
-			
+			String toreturn = "";
 			for(Medication med: medsList){
-				
+				if(med.checked || med.timer < System.currentTimeMillis()){
+					toreturn+=med.getName()+",";
+				}
 			}
 
-
-			t.sendResponseHeaders(200, 0);
+			
+			t.sendResponseHeaders(200, toreturn.length());
 			OutputStream os = t.getResponseBody();
+			os.write(toreturn.getBytes());
 			os.close();
 		}
 	}
@@ -93,6 +96,8 @@ public class Server
 	static class Clear implements HttpHandler 
 	{
 		public void handle(HttpExchange t) throws IOException {
+			System.out.println("The user has cleared the list of medication");
+			
 			medsList.clear();
 			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
@@ -103,7 +108,7 @@ public class Server
 	static class Checkup implements HttpHandler 
 	{
 		public void handle(HttpExchange t) throws IOException {
-			System.out.println("Grandma is doing alright!");
+			System.out.println("Grandma is has taken today's medicine!");
 			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
 			os.close();
