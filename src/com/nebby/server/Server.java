@@ -46,6 +46,8 @@ public class Server
 	
 	public static void main(String[] args) throws Exception
 	{
+		System.err.println("STARTING E!");
+		System.out.println("STARTING!");
 		int port = args.length > 0 ? Integer.parseInt(args[0]) : 8888;
 		int size = args.length > 1 ? Integer.parseInt(args[1]) : 1024;
 		
