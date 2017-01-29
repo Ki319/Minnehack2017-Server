@@ -91,7 +91,6 @@ public class Server
 					} 
 					catch (IOException e)
 					{
-						e.printStackTrace();
 						continue;
 					}
 					try 
@@ -109,7 +108,6 @@ public class Server
 					} 
 					catch (IOException e)
 					{
-						e.printStackTrace();
 						continue;
 					}
 				}
@@ -123,7 +121,6 @@ public class Server
 				} 
 				catch (IOException e)
 				{
-					e.printStackTrace();
 				}
 			}
 		}.start();
