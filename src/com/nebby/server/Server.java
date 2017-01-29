@@ -51,9 +51,11 @@ public class Server
 		public void handle(HttpExchange t) throws IOException 
 		{
 			System.out.println("Adding a new pill to the list");
-			Medication med = new Medication(IOUtils.toString(t.getRequestBody()));
+			Medication med = new Medication();
 			med.timer = System.currentTimeMillis() + 60000;
 			medsList.add(med);
+			
+			System.out.println(med.toString()+" added");
 			t.sendResponseHeaders(200, 0);
 			OutputStream os = t.getResponseBody();
 			os.close();
